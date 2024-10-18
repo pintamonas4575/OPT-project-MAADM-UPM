@@ -1,7 +1,7 @@
 from __future__ import annotations
 
 from dpi.dilemma import Dilemma
-from dpi.player import Player, Cooperator, Defector, Tft, Grudger, Detective4MovsTft, Destructomatic
+from dpi.player import Cooperator, Defector, Tft, Grudger, Detective4MovsTft, Destructomatic
 from dpi.game import Game
 from dpi.tournament import Tournament 
 from dpi.sema4all_killer import Sema4All_Killer
@@ -16,4 +16,4 @@ participants = (Destructomatic(dilemma, "destr"),
 
 tournament = Tournament(participants, dilemma, n_rounds=100, error=0.01, repetitions=2)
 tournament.play()
-# tournament.plot_results()
+tournament.plot_results()

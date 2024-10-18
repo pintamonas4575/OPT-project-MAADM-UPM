@@ -1,11 +1,13 @@
 from __future__ import annotations
 
 import numpy as np
+import itertools
 import copy
 import math
 import matplotlib.pyplot as plt
 from player import Player, Tft, Cooperator, Defector
 from dilemma import Dilemma
+from game import Game
 
 class Evolution:
 
@@ -55,7 +57,7 @@ class Evolution:
 
         self.ranking = {copy.deepcopy(player): 0.0 for i, player in
                         enumerate(self.players)
-                        for _ in range(self.initial_population[i])}
+                       for _ in range(self.initial_population[i])}
 
     def natural_selection(self, result_tournament: dict[Player, float]) \
                           -> tuple[list,list]:
@@ -71,7 +73,25 @@ class Evolution:
             - Same kind of dict ranking as the input, but with the evolutionary
          dynamics applied
         """
-        raise NotImplementedError
+        
+        n = int(len(result_tournament) * self.reproductivity)    # n is the number of individuals that will be reaplaced
+
+        # El ranking ya esá ordenado
+        population_without_n_worst_individuals = list(result_tournament.keys())[0:-n]
+        n_best_individuals = list(result_tournament.keys())[0:n]
+
+        new_generation_population = {player.name: [0] for player in self.players}
+
+        # Añadimos todos los individuos menos los n peores
+        for individual in population_without_n_worst_individuals:
+            new_generation_population[individual.name][0] = new_generation_population[individual.name][0] + 1
+        
+        # En vez de añadir los n peores, volvemos a añadir los 5 mejores
+        for individual in n_best_individuals:
+            new_generation_population[individual.name][0] = new_generation_population[individual.name][0] + 1
+
+        return new_generation_population
+
 
     def count_strategies(self) -> dict[str, int]:
         """
@@ -109,7 +129,42 @@ class Evolution:
         #  'defector': [5, 10, 15, 19, 14, 9, 4, 0, 0, 0, 0],
         #  'tft': [5, 5, 5, 6, 11, 16, 21, 25, 25, 25, 25]}
 
-        raise NotImplementedError
+        count_evolution = {player.name: [val] for player, val in zip(self.players, self.initial_population)}
+        
+        for gen in range(self.generations):
+
+            # Ejectuamos el DP no iterativo
+            self.ranking = {copy.deepcopy(player): 0.0 for i, player in
+                enumerate(self.players)
+                for _ in range(count_evolution[player.name][gen])}
+
+            combinations = list(itertools.combinations(list(self.ranking.keys()), 2))
+            for repetetion in range(self.repetitions):
+                for combination in combinations:
+                    game=Game(combination[0],combination[1],self.n_rounds,self.error)
+                    game.play(True)
+                    combination[0].clean_history()
+                    combination[1].clean_history()
+                    score_0,score_1=game.score
+
+                    self.ranking[combination[0]] = self.ranking[combination[0]] + score_0
+                    self.ranking[combination[1]] = self.ranking[combination[1]] + score_1
+            
+            self.sort_ranking()
+            
+            # Se realiza la selección
+            next_generation = self.natural_selection(self.ranking)
+
+            for player in self.players:
+                if(player.name in next_generation):
+                    count_evolution[player.name].extend(next_generation[player.name])
+                else:
+                    count_evolution[player.name].extend([0])
+                    
+        self.stackplot(count_evolution)
+    
+    def sort_ranking(self) -> None:
+        self.ranking = dict(sorted(self.ranking.items(), key=lambda item: item[1],reverse=True))
 
     # Si quieres obtener un buen gráfico de la evolución, puedes usar este
     # método si has seguido la pista indicada en la cabecera del método

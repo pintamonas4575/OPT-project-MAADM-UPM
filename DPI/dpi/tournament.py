@@ -1,6 +1,7 @@
 from __future__ import annotations
 
 import itertools
+import matplotlib.pyplot as plt
 from game import Game
 from player import Player
 from dilemma import Dilemma
@@ -69,7 +70,11 @@ class Tournament:
         the names of the sorted ranking of players participating in the
         tournament. On the y-axis the points obtained.
         """
-        raise NotImplementedError
+        player_names = [x.name for x in self.ranking.keys()]
+        player_scores = self.ranking.values()
+
+        plt.title(f"Resultados tras {self.n_rounds} rondas:")
+        plt.bar(player_names, player_scores, color="Red")
 # -----------------------------------------------
 dilemma = Dilemma(2, -1, 3, 0)
 
