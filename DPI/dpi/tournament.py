@@ -52,9 +52,9 @@ class Tournament:
         for repetetion in range(self.repetitions):
             for combination in combinations:
                 game=Game(combination[0],combination[1],self.n_rounds,self.error)
-                print('*'*100)
+                print('*'*50)
                 print(f'Nuevo enfrentamiento{combination[0].name,combination[1].name}')
-                game.play(True)
+                game.play(do_print=False)
                 combination[0].clean_history()
                 combination[1].clean_history()
                 score_0,score_1=game.score
@@ -71,10 +71,15 @@ class Tournament:
         tournament. On the y-axis the points obtained.
         """
         player_names = [x.name for x in self.ranking.keys()]
-        player_scores = self.ranking.values()
+        player_scores = list(self.ranking.values())
 
         plt.title(f"Resultados tras {self.n_rounds} rondas:")
         plt.bar(player_names, player_scores, color="Red")
+
+        for i in range(len(player_names)):
+            plt.text(x=i, y=player_scores[i], s=player_scores[i], ha = 'center', bbox = dict(facecolor = 'yellow', alpha =.8))
+        
+        plt.show()
 # -----------------------------------------------
 dilemma = Dilemma(2, -1, 3, 0)
 
@@ -89,22 +94,4 @@ all_players = (cooperator_player, defector_player, tft_player, grudger_player,
 
 torneo = Tournament(all_players, n_rounds=10, error=0.0, repetitions=1)
 torneo.play()
-# torneo.plot_results()
-print(torneo.ranking)
-# ------------------------------------------------------------------------
-# ------------------------------------------------------------------------
-game = Game(Destructomatic(dilemma, "destr"), Tft(dilemma, "tft"),
-            dilemma, n_rounds=10, error=0.1)
-game.play(do_print=True)
-
-dilemma = Dilemma(13, 0, 20, 4)
-participants = (Destructomatic(dilemma, "destr"),
-                Cooperator(dilemma, "coop1"),
-                Defector(dilemma, "defect"),
-                Cooperator(dilemma, "coop2"),
-                Tft(dilemma, "tft"),
-                Detective4MovsTft(dilemma, "detect"))
-
-tournament = Tournament(participants, dilemma, n_rounds=100, error=0.01, repetitions=2)
-tournament.play()
-# tournament.plot_results()
+torneo.plot_results()

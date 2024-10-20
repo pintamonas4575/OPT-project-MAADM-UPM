@@ -85,7 +85,6 @@ tft_player = Tft(dilemma, "tft")
 grudger_player = Grudger(dilemma, "grudger")
 detective_player = Detective4MovsTft(dilemma, "detective")
 
-#Modifica las siguientes líneas a conveniencia para llevar a cabo distintos tests
-game = Game(tft_player, grudger_player, n_rounds=10, error=0)
+# Modifica las siguientes líneas a conveniencia para llevar a cabo distintos tests
+game = Game(detective_player, grudger_player, n_rounds=10, error=0)
 game.play(do_print=True)
-#print(game.score)
