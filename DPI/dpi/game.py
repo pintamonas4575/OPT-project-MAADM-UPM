@@ -3,6 +3,7 @@ from __future__ import annotations
 import random
 from dilemma import Dilemma, C, D
 from player import Player, Cooperator, Defector, Tft, Grudger, Detective4MovsTft
+from sema4all_killer import Sema4All_Killer
 
 class Game:
 
@@ -64,9 +65,15 @@ class Game:
                 else:
                     print(f'{self.player_2.name} played:{action_2}. Action was not changed.')
                 print(self.player_1.compute_scores(self.player_2))
+            
+            self.score = (self.player_1.compute_scores(self.player_2))
 
-        self.score = (self.player_1.compute_scores(self.player_2))
-        
+    def plot_results(self, do_print: bool = False) -> None:
+        if do_print:            
+            print("*"*20)
+            print(f"Players: {self.player_1.name} & {self.player_2.name}")
+            print(f"Scores: {self.score}")
+            print("*"*20)        
 
     def change_action(self, action):
         if random.random() < self.error:
@@ -84,7 +91,9 @@ defector_player = Defector(dilemma, "defector")
 tft_player = Tft(dilemma, "tft")
 grudger_player = Grudger(dilemma, "grudger")
 detective_player = Detective4MovsTft(dilemma, "detective")
+sema4all_player = Sema4All_Killer(dilemma, "sema4all")
 
 # Modifica las siguientes líneas a conveniencia para llevar a cabo distintos tests
-game = Game(detective_player, grudger_player, n_rounds=10, error=0)
-game.play(do_print=True)
+# game = Game(sema4all_player, tft_player, n_rounds=50, error=0)
+# game.play(do_print=False)
+# game.plot_results(do_print=True)

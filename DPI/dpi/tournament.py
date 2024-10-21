@@ -6,6 +6,7 @@ from game import Game
 from player import Player
 from dilemma import Dilemma
 from player import Player, Cooperator, Defector, Tft, Grudger, Detective4MovsTft, Destructomatic
+from sema4all_killer import Sema4All_Killer
 
 class Tournament:
 
@@ -52,13 +53,12 @@ class Tournament:
         for repetetion in range(self.repetitions):
             for combination in combinations:
                 game=Game(combination[0],combination[1],self.n_rounds,self.error)
-                print('*'*50)
-                print(f'Nuevo enfrentamiento{combination[0].name,combination[1].name}')
+                # print('*'*50)
+                # print(f'Nuevo enfrentamiento{combination[0].name,combination[1].name}')
                 game.play(do_print=False)
                 combination[0].clean_history()
                 combination[1].clean_history()
                 score_0,score_1=game.score
-                print(score_0,score_1)
                 
                 self.ranking[combination[0]] = self.ranking[combination[0]]+ score_0
                 self.ranking[combination[1]] = self.ranking[combination[1]] +score_1
@@ -73,6 +73,7 @@ class Tournament:
         player_names = [x.name for x in self.ranking.keys()]
         player_scores = list(self.ranking.values())
 
+        plt.figure(figsize=(9,5))
         plt.title(f"Resultados tras {self.n_rounds} rondas:")
         plt.bar(player_names, player_scores, color="Red")
 
@@ -89,9 +90,12 @@ tft_player = Tft(dilemma, "tft")
 grudger_player = Grudger(dilemma, "grudger")
 detective_player = Detective4MovsTft(dilemma, "detective")
 
-all_players = (cooperator_player, defector_player, tft_player, grudger_player,
-               detective_player)
+destructor_player = Destructomatic(dilemma, "destructor")
+sema4all_player = Sema4All_Killer(dilemma, "sema4all")
 
-torneo = Tournament(all_players, n_rounds=10, error=0.0, repetitions=1)
+all_players = (cooperator_player, defector_player, grudger_player,
+               detective_player, destructor_player, sema4all_player, tft_player)
+
+torneo = Tournament(all_players, n_rounds=100, error=0, repetitions=2)
 torneo.play()
 torneo.plot_results()

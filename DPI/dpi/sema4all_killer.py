@@ -14,19 +14,14 @@ class Sema4All_Killer(Player):
         self.opponent_defections = 0
 
     def strategy(self, opponent: Player) -> int:
-        """A veces le da un TIC en el que no se sabe qué es lo que sacará"""
-        self.iteration += 1
-
-        if self.iteration < 2: # la nº '0' y '1'
-            return self.first_movements[self.iteration]
+        """"""
+        if self.iteration < 2: # en las primeras se coopera
+            self.iteration += 1
+            return self.first_movements[self.iteration-1]
         
-        if self.iteration % 3 == 0:  # caso periódico de TIC
-            if random.random()+0.1 > 0.5:
-                return D
+        if self.history[-1] == opponent.history[-1]:
+            return self.history[-1]
         else:
-            return C
-        
-        # analizar últimos 3 movimientos del oponente
-        last_opponent_moves = opponent.history[:-3]
-        return max(set(last_opponent_moves), key=last_opponent_moves.count)
-
+            self.history[-1] = 1 - self.history[-1]
+            return self.history[-1]
+# -----------------------------------------------------------------  
