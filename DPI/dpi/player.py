@@ -183,3 +183,43 @@ class Destructomatic(Player):
 
         return C  # Cooperate otherwise
 # ------------------------------------------------------------
+class Periodic_CD(Player):
+
+    def __init__(self, dilemma: Dilemma, name: str = ""):
+        super().__init__(dilemma,name)
+        self.movements=[C,D]
+
+    def strategy(self, opponent: Player) -> int:
+        self.iteration += 1
+        return self.movements[(self.iteration-1) % 2]
+# ------------------------------------------------------------
+class Periodic_DC(Player):
+
+    def __init__(self, dilemma: Dilemma, name: str = ""):
+        super().__init__(dilemma,name)
+        self.movements=[D,C]
+
+    def strategy(self, opponent: Player) -> int:
+        self.iteration += 1
+        return self.movements[(self.iteration-1) % 2]
+# ------------------------------------------------------------
+class Periodic_CCD(Player):
+
+    def __init__(self, dilemma: Dilemma, name: str = ""):
+        super().__init__(dilemma,name)
+        self.movements=[C,C,D]
+
+    def strategy(self, opponent: Player) -> int:
+        self.iteration += 1
+        return self.movements[(self.iteration-1) % 3]
+# ------------------------------------------------------------
+class Periodic_CDD(Player):
+
+    def __init__(self, dilemma: Dilemma, name: str = ""):
+        super().__init__(dilemma,name)
+        self.movements=[C,D,D]
+
+    def strategy(self, opponent: Player) -> int:
+        self.iteration += 1
+        return self.movements[(self.iteration-1) % 3]
+# ------------------------------------------------------------

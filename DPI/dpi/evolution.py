@@ -4,8 +4,11 @@ import numpy as np
 import itertools
 import copy
 import math
+import random
 import matplotlib.pyplot as plt
-from player import Player, Tft, Cooperator, Defector
+from player import Player, Cooperator, Defector, Tft, Grudger, Detective4MovsTft, Destructomatic
+from player import Periodic_CD, Periodic_DC, Periodic_CCD, Periodic_CDD
+from sema4all_killer import Sema4All_Killer
 from dilemma import Dilemma
 from game import Game
 
@@ -142,7 +145,7 @@ class Evolution:
             for repetetion in range(self.repetitions):
                 for combination in combinations:
                     game=Game(combination[0],combination[1],self.n_rounds,self.error)
-                    game.play(True)
+                    game.play(False)
                     combination[0].clean_history()
                     combination[1].clean_history()
                     score_0,score_1=game.score
@@ -198,11 +201,25 @@ dilemma = Dilemma(2, -1, 3, 0)
 cooperator_player = Cooperator(dilemma, "cooperator")
 defector_player = Defector(dilemma, "defector")
 tft_player = Tft(dilemma, "tft")
+grudger_player = Grudger(dilemma, "grudger")
+detective_player = Detective4MovsTft(dilemma, "detective")
+periodic_cd  = Periodic_CD(dilemma, "periodic_cd")
+periodic_dc  = Periodic_DC(dilemma, "periodic_dc")
+periodic_ccd = Periodic_CCD(dilemma, "periodic_ccd")
+periodic_cdd = Periodic_CDD(dilemma, "periodic_cdd")
 
-all_players = (cooperator_player, defector_player, tft_player)
+destructor_player = Destructomatic(dilemma, "destructor")
+sema4all_player = Sema4All_Killer(dilemma, "sema4all")
 
-evolution = Evolution(all_players, n_rounds=10, error=0.00, repetitions=1,
+all_players = (tft_player, destructor_player, sema4all_player,
+               periodic_cd, periodic_dc, periodic_ccd, periodic_cdd)
+
+all_players = list(all_players)
+random.shuffle(all_players)
+all_players = tuple(all_players)
+
+evolution = Evolution(all_players, n_rounds=50, error=0.00, repetitions=1,
                       generations=10, reproductivity=0.2,
-                      initial_population=(15, 5, 5))
+                      initial_population=50)
 
 evolution.play(True)

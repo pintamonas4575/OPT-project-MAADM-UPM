@@ -6,6 +6,7 @@ from game import Game
 from player import Player
 from dilemma import Dilemma
 from player import Player, Cooperator, Defector, Tft, Grudger, Detective4MovsTft, Destructomatic
+from player import Periodic_CD, Periodic_DC, Periodic_CCD, Periodic_CDD
 from sema4all_killer import Sema4All_Killer
 
 class Tournament:
@@ -73,8 +74,8 @@ class Tournament:
         player_names = [x.name for x in self.ranking.keys()]
         player_scores = list(self.ranking.values())
 
-        plt.figure(figsize=(9,5))
-        plt.title(f"Resultados tras {self.n_rounds} rondas:")
+        plt.figure(figsize=(14,5))
+        plt.title(f"{self.n_rounds} rondas, {self.error} error, {self.repetitions} repeticiones")
         plt.bar(player_names, player_scores, color="Red")
 
         for i in range(len(player_names)):
@@ -84,18 +85,22 @@ class Tournament:
 # -----------------------------------------------
 dilemma = Dilemma(2, -1, 3, 0)
 
-cooperator_player = Cooperator(dilemma, "cooperator")
-defector_player = Defector(dilemma, "defector")
+# cooperator_player = Cooperator(dilemma, "cooperator")
+# defector_player = Defector(dilemma, "defector")
 tft_player = Tft(dilemma, "tft")
 grudger_player = Grudger(dilemma, "grudger")
 detective_player = Detective4MovsTft(dilemma, "detective")
+periodic_cd  = Periodic_CD(dilemma, "periodic_cd")
+periodic_dc  = Periodic_DC(dilemma, "periodic_dc")
+periodic_ccd = Periodic_CCD(dilemma, "periodic_ccd")
+periodic_cdd = Periodic_CDD(dilemma, "periodic_cdd")
 
 destructor_player = Destructomatic(dilemma, "destructor")
 sema4all_player = Sema4All_Killer(dilemma, "sema4all")
 
-all_players = (cooperator_player, defector_player, grudger_player,
-               detective_player, destructor_player, sema4all_player, tft_player)
+all_players = (tft_player, grudger_player, detective_player, destructor_player, sema4all_player,
+               periodic_cd, periodic_dc, periodic_ccd, periodic_cdd,)
 
-torneo = Tournament(all_players, n_rounds=100, error=0, repetitions=2)
+torneo = Tournament(all_players, n_rounds=150, error=0, repetitions=1)
 torneo.play()
 torneo.plot_results()
