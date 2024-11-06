@@ -1,11 +1,26 @@
 # OPT-project-MAADM-UPM
 
-Creación de un agente para un torneo del DPI (**D**ilema del **P**risionero **I**terado).
+Creación de un agente para un torneo del DPI (**D**ilema del **P**risionero **I**terado) y otras prácticas.
 
+# 📓 Notebook *P1_enunciado.ipynb*
 
+Práctica del agente del DPI.
 
+# 📓 Notebook *P2_enunciado.ipynb*
 
+Práctica sobre ejercicios de Lagrange, ejercicios de optimización y demás.
 
+# 📓 Notebook *P3_enunciado.ipynb*
+
+Práctica sobre redes neuronales.
+
+# 📂 Carpeta *"various_files"*
+
+Archivos varios sobre las pras prácticas y asignatura.
+
+# 📂 Carpeta *"DPI"*
+
+Práctica del DPI separada en archivos *.py*.
 
 # ⚖️ Licencia 
 
