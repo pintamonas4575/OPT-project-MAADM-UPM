@@ -14,6 +14,14 @@ Práctica sobre ejercicios de Lagrange, ejercicios de optimización y demás.
 
 Práctica sobre redes neuronales.
 
+# 📓 Notebook *P4_enunciado.ipynb*
+
+Práctica sobre ataque adversario a una red neuronal.
+
+# 🤖 Archivo *fasion_mnist.model*
+
+Modelo de clasificación del FASHION-MNIST de la práctica 4.
+
 # 📂 Carpeta *"various_files"*
 
 Archivos varios sobre las pras prácticas y asignatura.
